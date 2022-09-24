@@ -1,7 +1,34 @@
-﻿@inherits LayoutComponentBase
+﻿@using global::MonorailCss
+@inherits LayoutComponentBase
 
-<div class="flex flex-col h-full">
+<HeadContent>
+    <style>
+        @_cssContent
+    </style>
+</HeadContent>
+
+<div class="font-sans flex flex-col h-full">
     <NavMenu />
 
     @Body
 </div>
+
+@code{
+    private string _cssContent = null!;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var values = MonorailCss.CssClassValues();
+        IDictionary<string,string> applies = new Dictionary<string, string>()
+        {
+            { "h1", "font-extrabold text-7xl tracking-wide mb-6;" },
+            { "p", "text-xl mb-10" }
+        };
+        var framework = new CssFramework(new CssFrameworkSettings()
+        {
+            Applies = applies
+            
+        });
+        _cssContent = framework.Process(values);
+        base.OnAfterRender(firstRender);
+    }
+}
