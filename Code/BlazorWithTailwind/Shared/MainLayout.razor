@@ -1,4 +1,4 @@
-﻿@using global::MonorailCss
+﻿@using MonorailCss
 @inherits LayoutComponentBase
 
 <HeadContent>
@@ -17,8 +17,8 @@
     private string _cssContent = null!;
     protected override void OnAfterRender(bool firstRender)
     {
-        var values = MonorailCss.CssClassValues();
-        IDictionary<string,string> applies = new Dictionary<string, string>()
+        var values = Monorail.CssClassValues();
+        var applies = new Dictionary<string, string>()
         {
             { "h1", "font-extrabold text-7xl tracking-wide mb-6;" },
             { "p", "text-xl mb-10" }
@@ -26,7 +26,6 @@
         var framework = new CssFramework(new CssFrameworkSettings()
         {
             Applies = applies
-            
         });
         _cssContent = framework.Process(values);
         base.OnAfterRender(firstRender);
