@@ -7,7 +7,7 @@
 
 @code {
     private Timer _timer = default!;
-    private string _animationStyles = "translate-x-full opacity-0";
+    private string _animationStyles = Monorail.CssClass("translate-x-full opacity-0");
 
     [Parameter, EditorRequired]
     public RenderFragment ChildContent { get; set; } = default!;
@@ -28,7 +28,7 @@
 
     private void TriggerAnimation(object? sender, ElapsedEventArgs e)
     {
-        _animationStyles = "translate-x-0 opacity-100";
+        _animationStyles = Monorail.CssClass("translate-x-0 opacity-100");
         StateHasChanged();
     }
 

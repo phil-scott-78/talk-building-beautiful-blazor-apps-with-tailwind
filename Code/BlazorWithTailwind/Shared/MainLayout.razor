@@ -8,26 +8,37 @@
 </HeadContent>
 
 <div class="font-sans flex flex-col h-full">
-    <NavMenu />
+    <NavMenu/>
 
     @Body
 </div>
 
 @code{
     private string _cssContent = null!;
+
     protected override void OnAfterRender(bool firstRender)
     {
-        var values = Monorail.CssClassValues();
-        var applies = new Dictionary<string, string>()
+        if (firstRender)
         {
-            { "h1", "font-extrabold text-7xl tracking-wide mb-6;" },
-            { "p", "text-xl mb-10" }
-        };
-        var framework = new CssFramework(new CssFrameworkSettings()
-        {
-            Applies = applies
-        });
-        _cssContent = framework.Process(values);
+            var values = Monorail.CssClassValues();
+            var applies = new Dictionary<string, string>()
+            {
+                { "h1", "font-extrabold text-7xl tracking-wide mb-6" },
+                { "p", "text-xl mb-10" }
+            };
+            var framework = new CssFramework(new CssFrameworkSettings()
+            {
+                Applies = applies
+            });
+            var (css, reset, warnings) = framework.ProcessSplitWithWarnings(values);
+            _cssContent = reset + css;
+            if (warnings.Length > 0)
+            {
+                Console.WriteLine("Couldn't find these css classes: " + string.Join(", ", warnings));
+            }
+        }
+        
         base.OnAfterRender(firstRender);
     }
+
 }
